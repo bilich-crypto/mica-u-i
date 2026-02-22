@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#F6AFCB" />
+  <title>Mačkica Uči</title>
+<style>#screenName{display:block !important;}</style>
+  
+  <link rel="manifest" href="manifest.webmanifest" />
+ <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="icons/icon-192.png" />
+</head>
+
+<body>
+
+  <div class="app">
+    <!-- HEADER -->
+    <header class="top">
+      <div class="brand">
+        <span class="brand-emoji">🐱</span>
+        <span class="brand-title">
+          Mačkica Uči <span id="playerNameBadge"></span>
+        </span>
+      </div>
+      <button id="btnSettings" class="icon-btn" aria-label="Postavke">⚙️</button>
+    </header>
+
+    <main class="screen-wrap">
+      <!-- NAME -->
+      <section id="screenName" class="screen active" aria-label="Unos imena">
+        <h1>Kako se zoveš?</h1>
+
+        <div class="result-box">
+          <label style="font-weight:900; display:block; margin-bottom:8px;">Upiši ime</label>
+          <input id="playerNameInput"
+                 type="text"
+                 inputmode="text"
+                 maxlength="20"
+                 placeholder="npr. Mia"
+                 style="width:100%; padding:14px; font-size:20px; border-radius:16px; border:2px solid rgba(0,0,0,.06);" />
+          <p class="note" style="margin:10px 0 0;">Ime će se pojavljivati u igri.</p>
+        </div>
+
+        <div class="big-buttons">
+          <button class="big-btn" id="btnSaveName">Spremi i kreni</button>
+        </div>
+      </section>
+
+      <!-- MAIN MENU -->
+      <section id="screenMenu" class="screen" aria-label="Glavni izbornik">
+        <h1>Odaberi</h1>
+
+        <div class="big-buttons">
+          <button class="big-btn" id="btnMath">🔢 Matematika</button>
+          <button class="big-btn" id="btnLetters">🔤 Slova</button>
+        </div>
+
+        <p class="note">
+          Ukupno zvjezdica: <strong id="totalStarsBadge">0</strong> ⭐
+          <br />
+          Sve je besplatno. Radi i bez interneta.
+        </p>
+      </section>
+
+      <!-- LEVEL SELECT -->
+      <section id="screenLevels" class="screen" aria-label="Odabir razine">
+        <h1>Matematika — razine</h1>
+
+        <div class="cards">
+          <button class="card" data-level="1">
+            <div class="card-title">🟢 Razina 1</div>
+            <div class="card-sub">Zbrajanje i oduzimanje do 10</div>
+            <div class="card-sub">❤️ 10 života • 10 pitanja</div>
+          </button>
+
+          <button class="card" data-level="2">
+            <div class="card-title">🟡 Razina 2</div>
+            <div class="card-sub">Zbrajanje i oduzimanje do 20</div>
+            <div class="card-sub">❤️ 5 života • 10 pitanja</div>
+            <div class="card-sub"><strong>(otključaj na 20⭐)</strong></div>
+          </button>
+
+          <button class="card" data-level="3">
+            <div class="card-title">🔴 Razina 3</div>
+            <div class="card-sub">Zbrajanje i oduzimanje do 30</div>
+            <div class="card-sub">❤️ 3 života • 10 pitanja</div>
+            <div class="card-sub"><strong>(otključaj na 50⭐)</strong></div>
+          </button>
+        </div>
+
+        <div class="row">
+          <button class="small-btn" id="btnBackToMenu">← Natrag</button>
+        </div>
+      </section>
+
+      <!-- GAME -->
+      <section id="screenGame" class="screen" aria-label="Igra">
+        <div class="hud">
+          <div id="lives" class="lives" aria-label="Životi"></div>
+          <div id="stars" class="stars" aria-label="Zvjezdice">⭐ 0</div>
+          <div id="progress" class="progress" aria-label="Napredak">1/10</div>
+        </div>
+
+        <div class="stage" style="position:relative;">
+          <img id="micaImg" class="mica" src="mica/mica-idle.png" alt="Mica" />
+          <img id="dropsImg" class="drops" src="mica/drops.png" alt="" />
+          <div id="question" class="question">7 + 5 = ?</div>
+        </div>
+
+        <div class="answers" role="group" aria-label="Odgovori">
+          <button class="ans-btn" data-ans="0">10</button>
+          <button class="ans-btn" data-ans="1">12</button>
+          <button class="ans-btn" data-ans="2">11</button>
+          <button class="ans-btn" data-ans="3">13</button>
+        </div>
+
+        <div id="toast" class="toast" aria-live="polite"></div>
+      </section>
+
+      <!-- LETTERS -->
+      <section id="screenLetters" class="screen" aria-label="Slova">
+        <h1>Slova — mini igre</h1>
+
+        <div class="letters-mode">
+          <div class="hud" style="padding:0; justify-content:space-between;">
+            <div class="pill" id="lettersType">Pronađi slovo</div>
+            <div class="pill" id="lettersProgress">1/10</div>
+          </div>
+
+          <div class="stage">
+            <img id="micaLettersImg" class="mica" src="mica/mica-idle.png" alt="Mica" />
+            <div id="lettersPrompt" class="subhint">Dodirni slovo A</div>
+            <div id="lettersBig" class="big-letter">A</div>
+          </div>
+
+          <div class="answers" role="group" aria-label="Odgovori slova">
+            <button class="ans-btn" data-lans="0">A</button>
+            <button class="ans-btn" data-lans="1">B</button>
+            <button class="ans-btn" data-lans="2">a</button>
+            <button class="ans-btn" data-lans="3">b</button>
+          </div>
+
+          <div id="lettersToast" class="toast" aria-live="polite"></div>
+
+          <div class="row">
+            <button class="small-btn" id="btnLettersBack">← Natrag</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section id="screenResult" class="screen" aria-label="Rezultat">
+        <h1 id="resultTitle">Bravo!</h1>
+
+        <div class="result-box">
+          <div id="resultScore" class="result-line">Točno: 0/10</div>
+          <div id="resultStars" class="result-line">⭐ Osvojeno: +0</div>
+        </div>
+
+        <div class="big-buttons">
+          <button class="big-btn" id="btnPlayAgain">▶️ Igraj ponovno</button>
+          <button class="big-btn" id="btnToMenu">🏠 Glavni izbornik</button>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="screenSettings" class="screen" aria-label="Postavke">
+        <h1>Postavke</h1>
+
+        <label class="toggle">
+          <input type="checkbox" id="toggleSound" checked />
+          <span>🔊 Zvuk</span>
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" id="toggleVoice" checked />
+          <span>🗣️ Glas</span>
+        </label>
+
+        <div class="row">
+          <button class="small-btn" id="btnChangeName">✏️ Promijeni ime</button>
+          <button class="small-btn" id="btnCloseSettings">← Natrag</button>
+        </div>
+      </section>
+    </main>
+  </div>
+<div id="sparkle" class="sparkle">⭐</div>
+
+<div id="confetti" class="confetti">
+  <div class="msg">🎉 Bravo!</div>
+</div>
+  <script src="app.js"></script>
+  <script>
+    // Register service worker for offline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+    }
+  </script>
+</body>
+</html>
